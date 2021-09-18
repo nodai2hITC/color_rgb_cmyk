@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>光の三原色(RGB)による加法混色</title>
+    <style>
+html {
+    height: 100%;
+}
+body {
+    height: 100%;
+}
+
+p#color {
+    margin: 1em;
+    width: 90%;
+    height: 50%;
+    border: solid 1px black;
+    background-color: white;
+}
+
+form label {
+    font-size: 3em;
+}
+form input[type=number] {
+    font-size: 3em;
+    width: 3em;
+    text-align: right;
+}
+form input[type=range] {
+    height: 3em;
+    width: 50%;
+}
+
+p#rgb{
+    font-size: 3em;
+    margin: 0;
+}
+    </style>
+    <script>
+function update_color(){
+    let r = parseInt(document.getElementById("value_r").value);
+    let g = parseInt(document.getElementById("value_g").value);
+    let b = parseInt(document.getElementById("value_b").value);
+    
+    document.getElementById("color").style.backgroundColor =
+        "rgb(" + r.toString() + ", " + g.toString() + ", " + b.toString() + ")";
+    
+    document.getElementById("rgb").innerText = "#" +
+        ("0" + r.toString(16)).substr(-2).toUpperCase() +
+        ("0" + g.toString(16)).substr(-2).toUpperCase() +
+        ("0" + b.toString(16)).substr(-2).toUpperCase();
+}
+
+function valueChange(event){
+    let elm = event.currentTarget;
+    let matched = elm.name.match(/^(value|range)_(.)$/);
+    if (! matched) return;
+
+    if (matched[1] == "value"){
+        document.getElementById("range_" + matched[2]).value = elm.value;
+        if (elm.value <   0) elm.value = 0;
+        if (elm.value > 255) elm.value = 255;
+    } else {
+        document.getElementById("value_" + matched[2]).value = elm.value;
+    }
+    update_color();
+}
+
+window.addEventListener("DOMContentLoaded", function(event){
+    document.getElementById("value_r").addEventListener("input", valueChange);
+    document.getElementById("value_g").addEventListener("input", valueChange);
+    document.getElementById("value_b").addEventListener("input", valueChange);
+    document.getElementById("range_r").addEventListener("input", valueChange);
+    document.getElementById("range_g").addEventListener("input", valueChange);
+    document.getElementById("range_b").addEventListener("input", valueChange);
+    update_color();
+});
+    </script>
+</head>
+<body>
+    <p id="color"></p>
+    <form>
+        <p>
+            <input type="range" name="range_r" id="range_r" value="255" min="0" max="255">
+            <input type="number" name="value_r" id="value_r" value="255" min="0" max="255">
+            <label for="value_r" style="color: #f00;">Ｒ（赤）</label>
+        </p>
+        <p>
+            <input type="range" name="range_g" id="range_g" value="255" min="0" max="255">
+            <input type="number" name="value_g" id="value_g" value="255" min="0" max="255">
+            <label for="value_g" style="color: #0f0;">Ｇ（緑）</label>
+        </p>
+        <p>
+            <input type="range" name="range_b" id="range_b" value="255" min="0" max="255">
+            <input type="number" name="value_b" id="value_b" value="255" min="0" max="255">
+            <label for="value_b" style="color: #00f;">Ｂ（青）</label>
+        </p>
+    </form>
+    <p id="rgb"></p>
+</body>
+</html>

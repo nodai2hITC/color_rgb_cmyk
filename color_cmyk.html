@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>色の三原色＋黒(CMYK)による減法混色</title>
+    <style>
+html {
+    height: 100%;
+}
+body {
+    height: 100%;
+}
+
+p#color {
+    margin: 1em;
+    width: 90%;
+    height: 50%;
+    border: solid 1px black;
+    background-color: white;
+}
+
+form label {
+    font-size: 3em;
+}
+form input[type=number] {
+    font-size: 3em;
+    width: 3em;
+    text-align: right;
+}
+form input[type=range] {
+    height: 3em;
+    width: 50%;
+}
+
+    </style>
+    <script>
+function update_color(){
+    let c = parseInt(document.getElementById("value_c").value);
+    let m = parseInt(document.getElementById("value_m").value);
+    let y = parseInt(document.getElementById("value_y").value);
+    let k = parseInt(document.getElementById("value_k").value);
+    let r = 255 * (255 - c) * (255 - k) / 65025;
+    let g = 255 * (255 - m) * (255 - k) / 65025;
+    let b = 255 * (255 - y) * (255 - k) / 65025;
+
+    document.getElementById("color").style.backgroundColor =
+        "rgb(" + r.toString() + ", " + g.toString() + ", " + b.toString() + ")";
+}
+
+function valueChange(event){
+    let elm = event.currentTarget;
+    let matched = elm.name.match(/^(value|range)_(.)$/);
+    if (! matched) return;
+
+    if (matched[1] == "value"){
+        document.getElementById("range_" + matched[2]).value = elm.value;
+        if (elm.value <   0) elm.value = 0;
+        if (elm.value > 255) elm.value = 255;
+    } else {
+        document.getElementById("value_" + matched[2]).value = elm.value;
+    }
+    update_color();
+}
+
+window.addEventListener("DOMContentLoaded", function(event){
+    document.getElementById("value_c").addEventListener("input", valueChange);
+    document.getElementById("value_m").addEventListener("input", valueChange);
+    document.getElementById("value_y").addEventListener("input", valueChange);
+    document.getElementById("value_k").addEventListener("input", valueChange);
+    document.getElementById("range_c").addEventListener("input", valueChange);
+    document.getElementById("range_m").addEventListener("input", valueChange);
+    document.getElementById("range_y").addEventListener("input", valueChange);
+    document.getElementById("range_k").addEventListener("input", valueChange);
+    update_color();
+});
+    </script>
+</head>
+<body>
+    <p id="color"></p>
+    <form>
+        <p>
+            <input type="range" name="range_c" id="range_c" value="0" min="0" max="255">
+            <input type="number" name="value_c" id="value_c" value="0" min="0" max="255">
+            <label for="value_c" style="color: #0ff; background-color: #000;">Ｃ（シアン）</label>
+        </p>
+        <p>
+            <input type="range" name="range_m" id="range_m" value="0" min="0" max="255">
+            <input type="number" name="value_m" id="value_m" value="0" min="0" max="255">
+            <label for="value_m" style="color: #f0f; background-color: #000;">Ｍ（マゼンタ）</label>
+        </p>
+        <p>
+            <input type="range" name="range_y" id="range_y" value="0" min="0" max="255">
+            <input type="number" name="value_y" id="value_y" value="0" min="0" max="255">
+            <label for="value_y" style="color: #ff0; background-color: #000;">Ｙ（イエロー）</label>
+        </p>
+        <p>
+            <input type="range" name="range_k" id="range_k" value="0" min="0" max="255">
+            <input type="number" name="value_k" id="value_k" value="0" min="0" max="255">
+            <label for="value_k" style="color: #000;">Ｋ（黒）</label>
+        </p>
+    </form>
+</body>
+</html>
