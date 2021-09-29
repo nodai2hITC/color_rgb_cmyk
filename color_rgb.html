@@ -14,7 +14,7 @@ body {
 p#color {
     margin: 1em;
     width: 90%;
-    height: 50%;
+    height: 45%;
     border: solid 1px black;
     background-color: white;
 }
@@ -37,6 +37,7 @@ p#rgb{
     margin: 0;
 }
     </style>
+    <script src="https://cdn.rangetouch.com/2.0.0/rangetouch.js"></script>
     <script>
 function update_color(){
     let r = parseInt(document.getElementById("value_r").value);
@@ -75,6 +76,7 @@ window.addEventListener("DOMContentLoaded", function(event){
     document.getElementById("range_g").addEventListener("input", valueChange);
     document.getElementById("range_b").addEventListener("input", valueChange);
     update_color();
+    const inputRange = RangeTouch.setup('[type=range]')
 });
     </script>
 </head>
